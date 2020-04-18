@@ -1,39 +1,9 @@
-import pomodoroReducer, {
-  Phase,
-  State as PomodoroState,
-  Action as PomodoroAction,
-} from "./pomodoro";
-
-import runningReducer, {
-  State as RunningState,
-  Action as RunningAction,
-} from "./running";
-
-import createFlux from "./flux";
-
-interface State {
-  running: RunningState;
-  pomodoro: PomodoroState;
-}
-
-const initialState: State = {
-  running: true,
-  pomodoro: {
-    timer: 0,
-    phase: Phase.WORK,
-    workCount: 0,
-  },
-};
-
-function appReducer(state: State, action: string): State {
-  return {
-    running: runningReducer(state.running, action),
-    pomodoro: pomodoroReducer(state.pomodoro, action),
-  };
-}
+import { Action as PomodoroAction } from "./store/pomodoro";
+import { Action as RunningAction } from "./store/running";
+import createStore from "./store";
 
 function main() {
-  const { getState, dispatch } = createFlux<State>(appReducer, initialState);
+  const { getState, dispatch } = createStore();
   const timerNode = document.getElementById("timer");
   const phaseNode = document.getElementById("phase");
   const toggleRunningButton = document.getElementById("toggle-running");
