@@ -1,7 +1,13 @@
+export interface Flux<T> {
+  dispatch: (action: string) => void;
+  getState: () => T;
+  subscribe: (handler: (state?: T, prevState?: T) => void) => void;
+}
+
 export default function createFlux<T>(
   reducer: (prevState: T, action: string) => T,
   initialState: T
-) {
+): Flux<T> {
   let subscriptions = [];
   let state = initialState;
 
