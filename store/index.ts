@@ -1,6 +1,6 @@
-import createFlux from "../lib/flux";
-import pomodoroReducer, { Phase, State as PomodoroState } from "./pomodoro";
-import runningReducer, { State as RunningState } from "./running";
+import createFlux, { combineReducers } from "../lib/flux";
+import pomodoro, { Phase, State as PomodoroState } from "./pomodoro";
+import running, { State as RunningState } from "./running";
 
 interface State {
   running: RunningState;
@@ -16,13 +16,9 @@ const initialState: State = {
   },
 };
 
-function appReducer(state: State, action: string): State {
-  return {
-    running: runningReducer(state.running, action),
-    pomodoro: pomodoroReducer(state.pomodoro, action),
-  };
-}
-
 export default function createStore() {
-  return createFlux<State>(appReducer, initialState);
+  return createFlux<State>(
+    combineReducers({ pomodoro, running }),
+    initialState
+  );
 }
