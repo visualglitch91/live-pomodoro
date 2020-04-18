@@ -14,11 +14,18 @@ function main() {
     toggleRunningButton.textContent = state.running ? "Pause" : "Resume";
   }
 
+  function notify(state: State, prevState: State) {
+    if (state.pomodoro.phase !== prevState.pomodoro.phase) {
+      console.log(`Phase changed to ${state.pomodoro.phase}`);
+    }
+  }
+
   toggleRunningButton.onclick = () => {
     dispatch(RunningAction.TOGGLE_RUNNING);
   };
 
   subscribe(render);
+  subscribe(notify);
 
   render(getState());
 
